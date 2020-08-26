@@ -28,9 +28,47 @@ class _HomePageState extends State<HomePage> {
               );
             } else {
               return Container(
-                color: Colors.red,
                 child: Column(
-                  children: [],
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index) {
+                          Countries data = snapshot.data[index];
+                          return ListTile(
+                            title: Text(
+                              data.country,
+                              style: TextStyle(
+                                  fontSize: 18.0, fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Container(
+                                child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
+                                    data.cases.toString() + ' Casos',
+                                    style: TextStyle(
+                                        fontSize: 15.0, color: Colors.blue),
+                                  ),
+                                  SizedBox(
+                                    height: 6.0,
+                                  ),
+                                  Text(
+                                    data.deaths.toString() + ' Mortes',
+                                    style: TextStyle(
+                                        fontSize: 15.0, color: Colors.red),
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                ],
+                              ),
+                            )),
+                          );
+                        })
+                  ],
                 ),
               );
             }
@@ -41,6 +79,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+// Metodo que busca os dados
 Future<List<Countries>> getData() async {
   String url = "https://coronavirus-19-api.herokuapp.com/countries";
   http.Response response = await http.get(url);
